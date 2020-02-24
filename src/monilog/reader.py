@@ -1,0 +1,1 @@
+# reads a log file and provide an iterable of logs 
