@@ -1,1 +1,1 @@
-# reads a log file and provide an iterable of logs 
+# reads a line of log file and provide an log data structure 
