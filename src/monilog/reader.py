@@ -1,1 +1,0 @@
-# reads a line of log file and provide an log data structure 

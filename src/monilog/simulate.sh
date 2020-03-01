@@ -1,2 +1,3 @@
-python generate_logs.py &
+rm /tmp/access.log
+python log_generator.py &
 python pipeline.py

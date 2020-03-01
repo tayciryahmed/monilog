@@ -1,7 +1,8 @@
-import time 
+import time
 import random
 from time import sleep
 from datetime import datetime
+
 
 class LogGenerator:
     def __init__(self,
@@ -13,13 +14,13 @@ class LogGenerator:
         self.ips = ["::1", "192.168.0.110", "127.0.0.1", "60.242.26.14"]
         self.methods = ["GET", "GET", "GET", "POST", "POST", "PUT", "DELETE"]
         self.sections = ["/img", "/captcha", "/css", "/foo", "/foo", "/bar"]
-        self.codes = ["200", "200", "200", "200", "200", "304", "403", "404"]
-    
+        self.codes = ["200", "200", "200", "200", "200", "304", "403", "404", "501"]
+
     def write_log(self, timestamp):
         with open(self.file, 'a+') as f:
             f.write(self.generate_log(timestamp))
             f.close()
-    
+
     def random_ip(self):
         return str(random.randint(0, 255)) + "." + str(random.randint(0, 255)) \
             + "." + str(random.randint(0, 255)) + "." \
@@ -30,7 +31,7 @@ class LogGenerator:
         method = random.choice(self.methods)
         section = random.choice(self.sections) \
             + random.choice([".html",
-                            random.choice(self.sections)+".html"])
+                             random.choice(self.sections)+".html"])
         code = random.choice(self.codes)
         size = random.randint(10, 100000)
         return ('%s - - [%s +1000] "%s %s HTTP/1.1" %s %d\n'
@@ -46,6 +47,7 @@ class LogGenerator:
         while time.time()-start < duration:
             self.write_log(datetime.now())
             sleep(random.random()*2/self.rate*60)
+
 
 if __name__ == "__main__":
     LogGenerator(rate=700).run(duration=3*60)
