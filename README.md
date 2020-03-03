@@ -23,7 +23,7 @@ python src/monilog/log_generator.py --rates 9 11 8 --durations 150 150 150
 With `rates` being the number of requests per second for each step of the simulation and `durations` being the durations of the corresponding simulation steps.
 
 
-## Improvements
+## Future Improvements
 This is a first working solution for http log monitoring. Many improvements can be added : 
 * Managing threaded access to the log file using cross-platform file locking. The current implementation is tested on Linux and may
 cause errors in Windows. 
