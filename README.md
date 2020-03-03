@@ -7,11 +7,20 @@ This project allows watching and logging all HTTP traffic of a system, generatin
 * Python and preferably Linux.
 
 ## Usage
-* You can run 'simulate.sh' to run a simulation of how this project works. The simulation setup is customisable, feel free to play with it.
-* To run the monitoring in your own log file, run: `python src/monilog/pipeline.py --file /path/to/your/file --threshold 10`
-* To customize the log generation, run: `python src/monilog/log_generator.py --rates 9 11 8 --durations 150 150 150`. With the:
-    - `rates` being the number of requests per second for each step of the simulation.
-    - `durations` being the durations of the corresponding simulation steps.
+* You can execute `simulate.sh` to run a simulation of how this project works. The simulation setup is customisable, feel free to play with it.
+* To run the monitoring in your own log file, run: 
+
+```
+python src/monilog/pipeline.py --file /path/to/your/file --threshold 10
+```
+
+* To customize the log generation, run: 
+
+```
+python src/monilog/log_generator.py --rates 9 11 8 --durations 150 150 150
+```
+
+With `rates` being the number of requests per second for each step of the simulation and `durations` being the durations of the corresponding simulation steps.
 
 
 ## Improvements
