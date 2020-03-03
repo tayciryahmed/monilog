@@ -29,7 +29,8 @@ This is a first working solution for http log monitoring. Many improvements can 
 cause errors in Windows. 
 * Enhancing the display of the log analysis and statistics. For now, the monitoring results are written 
 to standard output and to a log file with the naming convention `simulation-<timestamp>.log`. A better setup would be to customize the 
-GUI using [npyscreen](https://pypi.org/project/npyscreen/) for instance. It is also possible to build a live dashboard consuming `simulation-<timestamp>.log` data and mapping it to graphs. 
+GUI using [npyscreen](https://pypi.org/project/npyscreen/) for instance. 
+* It is also possible to build a live dashboard consuming `simulation-<timestamp>.log` data and mapping it to graphs. 
 * Pushing alerting notifications by email or SMS to admins / owners of the monitored system. 
 * Adding more relevant statistics to the analysis of the website and handle timezone changes.
 * For a higher scale of data requiring high availability in a production setup, a more robust solution would be indexing the logs in ElasticSearch and building Kibana dashboards, with a stream-processing platform such as Kafka. 
