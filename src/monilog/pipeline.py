@@ -1,18 +1,21 @@
 # manage the pipeline : reading the logs, sending them to the stats then send
 # stats to alerting and display both
 
+import os
+import sys
 import time
-import logging
 import argparse
 
 from parser import Parser
 from statistics import Statistics
+from utils import init_logger
 
-log_format = '%(asctime)s %(levelname)s %(message)s'
-logging.basicConfig(format=log_format, level=logging.INFO)
+logger = init_logger()
+
 
 HIGH_TRAFFIC_DUR = 2*60
 STAT_DUR = 10
+MAX_IDLE_TIME = 2*60
 
 
 class MonilogPipeline:
@@ -29,21 +32,34 @@ class MonilogPipeline:
         alert = False
         high_traffic_nb = 0
         traffic_buffer = []
+        
+        if not os.path.exists(self.file):
+            time.sleep(1)
 
-        file = open(self.file)
+        file = open(self.file, 'r', os.O_NONBLOCK)
 
         stat_time = time.time()
         high_traffic_time = time.time()
+        
+        idle_time = None
 
         while True:
             line = file.readline()
             if not line:
-                continue
+                if not idle_time : 
+                    idle_time = 0
+                else:
+                    idle_time = time.time() - idle_time
+                    logger.info('The logging app is not used for {idle_time}s.\n')
+                    if idle_time > MAX_IDLE_TIME:
+                        sys.exit(0)
+                
             else:
+                idle_time = None
                 try:
                     parsed_line = parser(line)
                 except:
-                    logging.warning(f"There was an error parsing : {line}")
+                    logger.warning(f"There was an error parsing : {line}")
                     continue
 
                 traffic_buffer.append(
@@ -52,7 +68,7 @@ class MonilogPipeline:
                 high_traffic_nb += 1
 
                 if time.time() - stat_time >= STAT_DUR:
-                    logging.info('\n'+get_stats(traffic_buffer))
+                    logger.info('\n'+get_stats(traffic_buffer))
                     stat_time = time.time()
                     traffic_buffer = []
 
@@ -61,19 +77,19 @@ class MonilogPipeline:
 
                         alert = True
 
-                        logging.warning(
-                            "High traffic generated an alert - hits = %f, triggered at %s"
+                        logger.warning(
+                            "High traffic generated an alert - hits = %f, triggered at %s.\n"
                             % (
                                 high_traffic_nb/HIGH_TRAFFIC_DUR,
-                                time.strftime('%d/%b/%Y:%H:%M:%S')
+                                time.strftime('%d/%b/%Y %H:%M:%S')
 
                             )
                         )
 
                     elif high_traffic_nb/HIGH_TRAFFIC_DUR <= self.threshold and alert:
-                        logging.info(
-                            "The high traffic alert is recovered at %s"
-                            % (time.strftime('%d/%b/%Y:%H:%M:%S'))
+                        logger.info(
+                            "The high traffic alert is recovered at %s.\n"
+                            % (time.strftime('%d/%b/%Y %H:%M:%S'))
                         )
 
                     high_traffic_time = time.time()
@@ -84,7 +100,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--file", default="/tmp/access.log")
-    parser.add_argument("--threshold", default=10)
+    parser.add_argument("--threshold", default=10, type=int)
     args = parser.parse_args()
 
     monilog_pipeline = MonilogPipeline(
