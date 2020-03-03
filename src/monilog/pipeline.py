@@ -41,21 +41,26 @@ class MonilogPipeline:
         stat_time = time.time()
         high_traffic_time = time.time()
         
-        idle_time = None
+        start_idle_time = None
+        idle_duration = 0
 
         while True:
             line = file.readline()
             if not line:
-                if not idle_time : 
-                    idle_time = 0
+                if not start_idle_time : 
+                    start_idle_time = time.time()
                 else:
-                    idle_time = time.time() - idle_time
-                    logger.info('The logging app is not used for {idle_time}s.\n')
-                    if idle_time > MAX_IDLE_TIME:
+                    idle_duration = time.time() - start_idle_time
+                    if idle_duration > MAX_IDLE_TIME:
+                        logger.info(
+                            f'Monitoring stopped : Logging app not used for {int(idle_duration)}s.\n'
+                        )
                         sys.exit(0)
                 
             else:
-                idle_time = None
+                start_idle_time = None
+                idle_duration = 0
+                
                 try:
                     parsed_line = parser(line)
                 except:
