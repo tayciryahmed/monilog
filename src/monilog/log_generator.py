@@ -1,7 +1,13 @@
+import os
 import time
 import random
+import argparse
 from time import sleep
 from datetime import datetime
+import logging
+
+log_format = '%(asctime)s %(levelname)s %(message)s'
+logging.basicConfig(format=log_format, level=logging.INFO)
 
 
 class LogGenerator:
@@ -17,8 +23,9 @@ class LogGenerator:
         self.codes = ["200", "200", "200", "200", "200", "304", "403", "404", "501"]
 
     def write_log(self, timestamp):
-        with open(self.file, 'a+') as f:
+        with open(self.file, 'a+', os.O_NONBLOCK) as f:
             f.write(self.generate_log(timestamp))
+            f.flush()
             f.close()
 
     def random_ip(self):
@@ -30,8 +37,9 @@ class LogGenerator:
         ip = random.choice([random.choice(self.ips), self.random_ip()])
         method = random.choice(self.methods)
         section = random.choice(self.sections) \
-            + random.choice([".html",
-                             random.choice(self.sections)+".html"])
+            + random.choice([".html", 
+                             random.choice(self.sections)+'/',
+                             random.choice(self.sections)+'/'])
         code = random.choice(self.codes)
         size = random.randint(10, 100000)
         return ('%s - - [%s +1000] "%s %s HTTP/1.1" %s %d\n'
@@ -46,9 +54,24 @@ class LogGenerator:
         start = time.time()
         while time.time()-start < duration:
             self.write_log(datetime.now())
-            sleep(random.random()*2/self.rate*60)
+            sleep(random.random()*2/self.rate)
 
 
 if __name__ == "__main__":
-    LogGenerator(rate=700).run(duration=3*60)
-    LogGenerator(rate=100).run(duration=3*60)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--rates", nargs='+', type=int, default=[11, 9])
+    parser.add_argument("--durations", nargs='+', type=int, default=[3*60, 3*60])   
+    args = parser.parse_args()
+    
+    if len(args.rates) != len(args.durations):
+        raise ValueError(
+            'You should have the same number of params rates and durations.'
+        )
+    
+   
+    for rate, duration in zip(args.rates, args.durations):
+        logging.info(
+            'Starting a new simulation setup with rate %d req/s and duration %d secs.\n'
+            % (rate, duration)
+        )
+        LogGenerator(rate=rate).run(duration=duration)
