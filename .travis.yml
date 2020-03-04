@@ -1,4 +1,5 @@
 language: python
-install: "pip install coverage unittest2"
+install: "pip install coverage unittest2 pylint"
 script:
+    - pylint monilog
     - nosetests --with-coverage --cover-package=monilog
