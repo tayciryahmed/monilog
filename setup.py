@@ -1,5 +1,5 @@
+import os 
 from setuptools import setup, find_packages
-
 import monilog
 
 def read(file):
@@ -7,7 +7,7 @@ def read(file):
 
 
 setup(name='monilog',
-      version='0.1.0',
+      version='0.1.1',
       description='HTTP log monitoring',
       long_description=read('README.md'),
       long_description_content_type="text/markdown",
