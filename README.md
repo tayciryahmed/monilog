@@ -20,6 +20,14 @@ This project allows watching and logging all HTTP traffic of a system, generatin
 python setup.py install 
 ```
 
+or 
+
+```
+pip install monilog
+```
+
+
+
 * To run the monitoring in your own log file, run: 
 
 ```
