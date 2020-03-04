@@ -32,7 +32,7 @@ With `rates` being the number of requests per second for each step of the simula
 * To execute the tests , run :
 
 ```
-nosetests .
+nosetests --with-coverage --cover-package=monilog
 ```
 
 **Attention:** The monitoring is stopped when no new logs are written to the log
