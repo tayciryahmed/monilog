@@ -17,5 +17,5 @@ def init_logger():
     fh.setFormatter(formatter)
 
     logger.addHandler(fh)
-    
+
     return logger

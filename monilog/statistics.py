@@ -33,7 +33,7 @@ class Statistics:
         ans += '.\nThe average number of hits per seconds is : '
         ans += str(len(traffic_buffer)/self.stat_dur)+'.\n'
         ans += 'The average size of requests is : '
-        ans += str(self._get_mean_list([x['size'] for x in traffic_buffer]))
+        ans += str(int(self._get_mean_list([x['size'] for x in traffic_buffer])))
         ans += '.\nThe most frequent response code is : '
         ans += str(Counter([x['code']
                             for x in traffic_buffer]).most_common(1)[0][0])

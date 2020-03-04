@@ -4,12 +4,10 @@
 import os
 import sys
 import time
-
+import argparse
 from monilog.parser import Parser
 from monilog.statistics import Statistics
 from monilog.utils import init_logger
-
-logger = init_logger()
 
 
 HIGH_TRAFFIC_DUR = 2*60
@@ -23,6 +21,10 @@ class MonilogPipeline:
                  threshold=10):
         self.file = file
         self.threshold = threshold
+        self.stop = False
+
+    def stop_monitoring(self):
+        self.stop = True
 
     def run(self):
         parser = Parser()
@@ -31,7 +33,7 @@ class MonilogPipeline:
         alert = False
         high_traffic_nb = 0
         traffic_buffer = []
-        
+
         if not os.path.exists(self.file):
             time.sleep(1)
 
@@ -39,27 +41,29 @@ class MonilogPipeline:
 
         stat_time = time.time()
         high_traffic_time = time.time()
-        
+
         start_idle_time = None
         idle_duration = 0
 
-        while True:
+        logger = init_logger()
+
+        while not self.stop:
             line = file.readline()
             if not line:
-                if not start_idle_time : 
+                if not start_idle_time:
                     start_idle_time = time.time()
                 else:
                     idle_duration = time.time() - start_idle_time
                     if idle_duration > MAX_IDLE_TIME:
                         logger.info(
-                            f'Monitoring stopped : Logging app not used for {int(idle_duration)}s.\n'
+                            f'Stopping monitoring : Logging app not used for {int(idle_duration)}s.\n'
                         )
-                        sys.exit(0)
-                
+                        self.stop = True
+
             else:
                 start_idle_time = None
                 idle_duration = 0
-                
+
                 try:
                     parsed_line = parser(line)
                 except:
@@ -98,6 +102,3 @@ class MonilogPipeline:
 
                     high_traffic_time = time.time()
                     high_traffic_nb = 0
-
-
-
