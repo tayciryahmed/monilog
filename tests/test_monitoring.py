@@ -8,6 +8,8 @@ tmp_file = '/tmp/test'
 
 
 def test_run():
+    if not os.path.exists(tmp_file):
+        os.mknod(tmp_file)
     monitoring_pipeline = MonilogPipeline()
     monitoring_pipeline.stop_monitoring()
     monitoring_pipeline.run()
