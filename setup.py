@@ -2,14 +2,15 @@ from setuptools import setup, find_packages
 
 import monilog
 
-with open('README.md') as f:
-    long_description = f.read()
+def read(file):
+    return open(os.path.join(os.path.dirname(__file__), file)).read()
 
 
 setup(name='monilog',
       version='0.1.0',
       description='HTTP log monitoring',
-      long_description=long_description,
+      long_description=read('README.md'),
+      long_description_content_type="text/markdown",
       classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
