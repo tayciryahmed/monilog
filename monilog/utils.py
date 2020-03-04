@@ -13,14 +13,9 @@ def init_logger():
     )
     fh.setLevel(logging.INFO)
 
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.INFO)
-
     formatter = logging.Formatter(log_format)
     fh.setFormatter(formatter)
-    ch.setFormatter(formatter)
 
     logger.addHandler(fh)
-    logger.addHandler(ch)
     
     return logger
