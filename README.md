@@ -22,6 +22,12 @@ python src/monilog/log_generator.py --rates 9 11 8 --durations 150 150 150
 
 With `rates` being the number of requests per second for each step of the simulation and `durations` being the durations of the corresponding simulation steps.
 
+* To execute the tests , run :
+
+```
+nosetests .
+```
+
 **Attention:** The monitoring is stopped when no new logs are written to the log
 file during `MAX_IDLE_TIME` set by default to 2 minutes. This is added to manage stopping
 the monitoring automatically, particularly when doing limited time simulations. 
