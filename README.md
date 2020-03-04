@@ -1,5 +1,7 @@
 # Monilog
 
+[![Build Status](https://travis-ci.org/tayciryahmed/monilog.svg?branch=master)](https://travis-ci.org/tayciryahmed/monilog)
+
 This project allows watching and logging all HTTP traffic of a system, generating log in w3c log format, showing statistics about total requests, maximum hits, requests in a timespan and alerting when traffic is above a customizable threshold.
 
 ## Requirements
