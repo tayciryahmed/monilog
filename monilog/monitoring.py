@@ -4,11 +4,10 @@
 import os
 import sys
 import time
-import argparse
 
-from parser import Parser
-from statistics import Statistics
-from utils import init_logger
+from monilog.parser import Parser
+from monilog.statistics import Statistics
+from monilog.utils import init_logger
 
 logger = init_logger()
 
@@ -101,16 +100,4 @@ class MonilogPipeline:
                     high_traffic_nb = 0
 
 
-if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--file", default="/tmp/access.log")
-    parser.add_argument("--threshold", default=10, type=int)
-    args = parser.parse_args()
-
-    monilog_pipeline = MonilogPipeline(
-        file=args.file,
-        threshold=args.threshold
-    )
-
-    monilog_pipeline.run()

@@ -6,6 +6,9 @@
 # C extensions
 *.so
 
+# Project specific 
+simulation*
+
 # Distribution / packaging
 .Python
 build/

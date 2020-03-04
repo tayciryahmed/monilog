@@ -1,3 +1,4 @@
 rm /tmp/access.log simulation*log
-python src/monilog/log_generator.py --rates 9 11 8 --durations 150 150 150 &
-python src/monilog/pipeline.py --file /tmp/access.log --threshold 10
+python setup.py install --user
+python monilog/bin/run_log_generator.py --rates 9 --durations 30 &
+python monilog/bin/run_monitoring.py --file /tmp/access.log --threshold 10

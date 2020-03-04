@@ -22,6 +22,10 @@ python src/monilog/log_generator.py --rates 9 11 8 --durations 150 150 150
 
 With `rates` being the number of requests per second for each step of the simulation and `durations` being the durations of the corresponding simulation steps.
 
+**Attention:** The monitoring is stopped when no new logs are written to the log
+file during `MAX_IDLE_TIME` set by default to 2 minutes. This is added to manage stopping
+the monitoring automatically, particularly when doing limited time simulations. 
+
 
 ## Future Improvements
 This is a first working solution for http log monitoring. Many improvements can be added : 
@@ -33,4 +37,5 @@ GUI using [npyscreen](https://pypi.org/project/npyscreen/) for instance.
 * It is also possible to build a live dashboard consuming `simulation-<timestamp>.log` data and mapping it to graphs. 
 * Pushing alerting notifications by email or SMS to admins / owners of the monitored system. 
 * Adding more relevant statistics to the analysis of the website and handle timezone changes.
+* Writing extensive unit and integration tests.
 * For a higher scale of data requiring high availability in a production setup, a more robust solution would be indexing the logs in ElasticSearch and building Kibana dashboards, with a stream-processing platform such as Kafka. 
