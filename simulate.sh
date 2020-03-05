@@ -1,5 +1,8 @@
-pip install monilog 
+rm /tmp/access.log 
 
-log_generator --rates 9 11 8 --durations 150 150 150 &
+pip install monilog==0.1.3 
+
+log_generator --rates 8 12 8 --durations 150 150 150 &
 monitoring --file /tmp/access.log --threshold 10
+
 
