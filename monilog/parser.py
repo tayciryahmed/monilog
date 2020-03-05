@@ -1,7 +1,21 @@
+'''
+Parsing a log entry.
+'''
+
 from datetime import datetime
 
 
 class Parser:
+    '''
+    Parsing a log string.
+
+    Args:
+        log_line (str): A log entry
+
+    Returns:
+        parsed_log (dict): A parsed log entry.
+    '''
+
     def __call__(self, log_line):
         parsed_log = {}
         log_values = log_line.split(' ')

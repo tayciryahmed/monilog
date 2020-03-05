@@ -1,10 +1,9 @@
-# manage the pipeline : reading the logs, sending them to the stats then send
-# stats to alerting and display both
+'''
+Manage the pipeline : reading the logs, parsing them and generating stats.
+'''
 
 import os
-import sys
 import time
-import argparse
 from monilog.parser import Parser
 from monilog.statistics import Statistics
 from monilog.utils import init_logger
@@ -16,6 +15,15 @@ MAX_IDLE_TIME = 2*60
 
 
 class MonilogPipeline:
+    '''
+    Read logs and generates statistics.
+
+    Args:
+        file (str): The file with the logs to monitor. 
+        threshold (int): Max traffic entries for the past 2 mn.
+        stop (bool): Whether to stop the monitoring.
+    '''
+
     def __init__(self,
                  file='/tmp/access.log',
                  threshold=10):
@@ -24,9 +32,15 @@ class MonilogPipeline:
         self.stop = False
 
     def stop_monitoring(self):
+        '''
+        To call when the monitoring app should be stopped.
+        '''
         self.stop = True
 
     def run(self):
+        '''
+        Run the monitoring pipeline.
+        '''
         parser = Parser()
         get_stats = Statistics(STAT_DUR)
 
@@ -56,7 +70,8 @@ class MonilogPipeline:
                     idle_duration = time.time() - start_idle_time
                     if idle_duration > MAX_IDLE_TIME:
                         logger.info(
-                            f'Stopping monitoring : Logging app not used for {int(idle_duration)}s.\n'
+                            'Stopping monitoring : Logging app not used for %d s.\n'
+                            % (int(idle_duration))
                         )
                         self.stop = True
 
@@ -67,7 +82,7 @@ class MonilogPipeline:
                 try:
                     parsed_line = parser(line)
                 except:
-                    logger.warning(f"There was an error parsing : {line}")
+                    #logger.warning(f"There was an error parsing : {line}")
                     continue
 
                 traffic_buffer.append(

@@ -1,3 +1,7 @@
+'''
+Generate statistics from a list of log entries.
+'''
+
 from collections import Counter
 
 
@@ -6,10 +10,22 @@ class Statistics:
         self.stat_dur = stat_dur
 
     def _get_mean_list(self, x):
+        '''
+        Calculate a mean of a list.
+
+        Args:
+            x (list): list of item to everage.
+
+        Returns:
+            (float): mean of the list.
+        '''
+
         return sum(x)/len(x)
 
     def __call__(self, traffic_buffer):
         '''
+        Generate statistics from a list of log entries.
+
         Args:
             traffic_buffer (list): Retrieved traffic logs.
             Each item of the list of the following structure:
@@ -24,7 +40,7 @@ class Statistics:
 
                 }
         Returns:
-            stats (str): Statistics about the traffic.
+            ans (str): Statistics about the traffic.
         '''
 
         ans = 'The section of the website of the most hits is : '
@@ -33,7 +49,8 @@ class Statistics:
         ans += '.\nThe average number of hits per seconds is : '
         ans += str(len(traffic_buffer)/self.stat_dur)+'.\n'
         ans += 'The average size of requests is : '
-        ans += str(int(self._get_mean_list([x['size'] for x in traffic_buffer])))
+        ans += str(int(self._get_mean_list([x['size']
+                                            for x in traffic_buffer])))
         ans += '.\nThe most frequent response code is : '
         ans += str(Counter([x['code']
                             for x in traffic_buffer]).most_common(1)[0][0])

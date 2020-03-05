@@ -1,8 +1,19 @@
+'''
+Utility functions for the monitoring and log generation.
+'''
+
 import time
 import logging
 
 
 def init_logger():
+    '''
+    Initialise the logger.
+
+    Returns:
+        logger (Logger): Logger to use for the monitoring.
+    '''
+
     log_format = '%(asctime)s %(levelname)s %(message)s'
 
     logger = logging.getLogger('Log monitoring console')

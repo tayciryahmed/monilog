@@ -1,3 +1,7 @@
+'''
+HTTP log monitoring console.
+'''
+
 from monilog.monitoring import MonilogPipeline
 from monilog.log_generator import LogGenerator
 from monilog.parser import Parser

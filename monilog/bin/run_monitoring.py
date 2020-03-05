@@ -1,3 +1,7 @@
+'''
+Running log monitoring.
+'''
+
 import argparse
 from monilog import MonilogPipeline
 

@@ -1,3 +1,8 @@
+'''
+Running log generation.
+'''
+
+
 import argparse
 import logging
 from monilog import LogGenerator
