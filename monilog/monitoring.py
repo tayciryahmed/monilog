@@ -11,7 +11,7 @@ from monilog.utils import init_logger
 
 HIGH_TRAFFIC_DUR = 2*60
 STAT_DUR = 10
-MAX_IDLE_TIME = 2*60
+MAX_IDLE_TIME = 5*60
 
 
 class MonilogPipeline:
